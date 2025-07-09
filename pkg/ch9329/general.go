@@ -45,6 +45,8 @@ func appendChecksum(packet []byte) []byte {
 }
 
 func (c *Client) MouseActionAbsolute(pressButton byte, point image.Point, wheel byte) (n int, err error) {
+	x := uint16(point.X)
+	y := uint16(point.Y)
 	packet := []byte{
 		0x57,
 		0xAB,
@@ -54,8 +56,8 @@ func (c *Client) MouseActionAbsolute(pressButton byte, point image.Point, wheel 
 		0x02,
 		pressButton,
 		0x00,
-		byte(point.X),
-		byte(point.Y),
+		byte(x), byte(x >> 8),
+		byte(y), byte(y >> 8),
 		wheel, //Wheel -127/+127
 	}
 	packet = appendChecksum(packet)
