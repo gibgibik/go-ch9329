@@ -2,6 +2,7 @@ package ch9329
 
 import (
 	"errors"
+	"image"
 
 	"go.bug.st/serial"
 )
@@ -30,11 +31,34 @@ func (c *Client) SendKey(modifier byte, key string) (n int, err error) {
 		0x00,
 		0x00,
 	}
+	packet = appendChecksum(packet)
+	return c.Port.Write(packet)
+}
+
+func appendChecksum(packet []byte) []byte {
 	var checkSum int
 	for _, k := range packet {
 		checkSum += int(k)
 	}
 	packet = append(packet, byte(checkSum%256))
+	return packet
+}
+
+func (c *Client) MouseActionAbsolute(pressButton byte, point image.Point, wheel byte) (n int, err error) {
+	packet := []byte{
+		0x57,
+		0xAB,
+		0x00,
+		CmdSendMouseAbs,
+		0x07, //fixed data length
+		0x02,
+		pressButton,
+		0x00,
+		byte(point.X),
+		byte(point.Y),
+		wheel, //Wheel -127/+127
+	}
+	packet = appendChecksum(packet)
 	return c.Port.Write(packet)
 }
 
