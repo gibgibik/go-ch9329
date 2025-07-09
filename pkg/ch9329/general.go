@@ -55,7 +55,6 @@ func (c *Client) MouseActionAbsolute(pressButton byte, point image.Point, wheel 
 		0x07, //fixed data length
 		0x02,
 		pressButton,
-		0x00,
 		byte(x), byte(x >> 8),
 		byte(y), byte(y >> 8),
 		wheel, //Wheel -127/+127
