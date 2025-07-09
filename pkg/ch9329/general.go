@@ -10,7 +10,7 @@ type Client struct {
 	Port serial.Port
 }
 
-func (c *Client) SendKey(key string) (n int, err error) {
+func (c *Client) SendKey(modifier byte, key string) (n int, err error) {
 	val, ok := HidKeycodes[key]
 	if !ok {
 		return 0, errors.New("no such key")
@@ -21,7 +21,7 @@ func (c *Client) SendKey(key string) (n int, err error) {
 		0x00,            // constant
 		CmdSendKeyboard, // command
 		0x08,            //length, constant for keyboard
-		0x00,
+		modifier,
 		0x00,
 		val,
 		0x00,

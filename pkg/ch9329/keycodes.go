@@ -30,3 +30,14 @@ var HidKeycodes = map[string]byte{
 	"up":    0x52,
 	"down":  0x51,
 }
+
+const (
+	ModLeftCtrl   = 1 << 0 // 0x01
+	ModLeftShift  = 1 << 1 // 0x02
+	ModLeftAlt    = 1 << 2 // 0x04
+	ModLeftGUI    = 1 << 3 // 0x08 (Windows key / Command)
+	ModRightCtrl  = 1 << 4 // 0x10
+	ModRightShift = 1 << 5 // 0x20
+	ModRightAlt   = 1 << 6 // 0x40
+	ModRightGUI   = 1 << 7 // 0x80
+)
