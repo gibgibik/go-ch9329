@@ -1,4 +1,4 @@
-package pkg
+package ch9329
 
 var HidKeycodes = map[string]byte{
 	// Lowercase letters (same codes)
