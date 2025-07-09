@@ -2,13 +2,15 @@ package ch9329
 
 import (
 	"errors"
+	"fmt"
 	"image"
 
 	"go.bug.st/serial"
 )
 
 type Client struct {
-	Port serial.Port
+	Port             serial.Port
+	ScreenResolution image.Rectangle
 }
 
 func (c *Client) SendKey(modifier byte, key string) (n int, err error) {
@@ -45,8 +47,8 @@ func appendChecksum(packet []byte) []byte {
 }
 
 func (c *Client) MouseActionAbsolute(pressButton byte, point image.Point, wheel byte) (n int, err error) {
-	x := uint16(point.X)
-	y := uint16(point.Y)
+	x := uint16((4096 * point.X) / c.ScreenResolution.Max.X)
+	y := uint16((4096 * point.Y) / c.ScreenResolution.Max.Y)
 	packet := []byte{
 		0x57,
 		0xAB,
@@ -60,7 +62,27 @@ func (c *Client) MouseActionAbsolute(pressButton byte, point image.Point, wheel 
 		wheel, //Wheel -127/+127
 	}
 	packet = appendChecksum(packet)
+	fmt.Println(fmt.Printf("% X\n", packet))
 	return c.Port.Write(packet)
+}
+
+func (c *Client) MouseAbsoluteEnd() (n int, err error) {
+	stopPacket := []byte{
+		0x57,
+		0xAB,
+		0x00,
+		0x04,
+		0x07,
+		0x02,
+		0x00,
+		0x00,
+		0x00,
+		0x00,
+		0x00,
+		0x00,
+		0x0F,
+	}
+	return c.Port.Write(stopPacket)
 }
 
 func (c *Client) EndKey() (n int, err error) {
@@ -83,8 +105,9 @@ func (c *Client) EndKey() (n int, err error) {
 	return c.Port.Write(stopPacket)
 }
 
-func NewClient(port serial.Port) *Client {
+func NewClient(port serial.Port, resolution image.Rectangle) *Client {
 	return &Client{
-		Port: port,
+		Port:             port,
+		ScreenResolution: resolution,
 	}
 }
