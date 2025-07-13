@@ -62,7 +62,6 @@ func (c *Client) MouseActionAbsolute(pressButton byte, point image.Point, wheel 
 		wheel, //Wheel -127/+127
 	}
 	packet = appendChecksum(packet)
-	fmt.Println(fmt.Printf("% X\n", packet))
 	return c.Port.Write(packet)
 }
 
