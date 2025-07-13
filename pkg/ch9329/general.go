@@ -2,7 +2,6 @@ package ch9329
 
 import (
 	"errors"
-	"fmt"
 	"image"
 
 	"go.bug.st/serial"
