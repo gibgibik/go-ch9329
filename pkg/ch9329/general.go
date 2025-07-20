@@ -88,7 +88,7 @@ func (c *Client) EndKey() (n int, err error) {
 		0x57,
 		0xAB,
 		0x00,
-		0x02,
+		CmdSendKeyboard,
 		0x08,
 		0x00,
 		0x00,
