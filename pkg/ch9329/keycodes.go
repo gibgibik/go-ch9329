@@ -30,8 +30,8 @@ var HidKeycodes = map[string]byte{
 	"right": 0x4F,
 	"up":    0x52,
 	"down":  0x51,
-
-	"home": 0x4A,
+	"end":   0x4D,
+	"home":  0x4A,
 }
 
 const (
